@@ -1,7 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-1. Clone the repo
-2. Run npm install
-3. Run npm run dev
+1. Clone the rep (code --> https --> in terminal, "git clone [what you copied]")
+3. Terminal --> run npm install
+4. Terminal --> run npm run dev
    
 ## Getting Started
 
