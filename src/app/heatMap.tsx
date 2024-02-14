@@ -45,7 +45,7 @@ const count = (d: Bin) => d.count;
 
 const colorMax = max(binData, (d) => max(bins(d), count));
 const bucketSizeMax = max(binData, (d) => bins(d).length);
-
+console.log(bucketSizeMax)
 // scales
 const xScale = scaleLinear<number>({
     domain: [0, binData.length],
@@ -74,7 +74,7 @@ export type HeatmapProps = {
     events?: boolean;
 };
 
-const defaultMargin = { top: 10, left: 20, right: 20, bottom: 110 };
+const defaultMargin = { top: 10, left: 70, right: 20, bottom: 110 };
 
 function Example({
     width,
@@ -104,13 +104,16 @@ function Example({
     // bounds
     const size =
         width > margin.left + margin.right ? width - margin.left - margin.right - separation : width;
-    const xMax = size * .95;
+    const xMax = size;
     const yMax = height - margin.bottom - margin.top;
 
     const binWidth = xMax / binData.length;
     const binHeight = yMax / bucketSizeMax;
     const radius = min([binWidth, binHeight], (d) => d) / 2;
-
+    //console.log("height: ", height)
+    //console.log("ymax: ", yMax)
+    //console.log("bucketsizemax: ", bucketSizeMax)
+    //console.log("bin heihgt: ", binHeight)
     xScale.range([0, xMax]);
     yScale.range([yMax, 0]);
 
@@ -118,7 +121,7 @@ function Example({
         <div>
             <svg width={width} height={height}>
                 <rect x={0} y={0} width={width} height={height} rx={14} className='fill-gray-100' />
-                <Group top={margin.top} left={margin.left * 4}>
+                <Group top={margin.top} left={margin.left} className='bg-red-600'>
                     <HeatmapRect
                         data={binData}
                         xScale={(d) => xScale(d) ?? 0}
@@ -158,13 +161,10 @@ function Example({
                 </Group>
                 <AxisLeft
                     scale={yScale}
-                    top={margin.top + margin.bottom / 2}
-                    left={margin.left * 4}
+                    top={margin.top + binHeight}
+                    left={margin.left}
                     label="Virtual height (km)"
                     stroke="#333"
-                    strokeWidth="1"
-                    //labelClassName='stroke-black font-size:12 text-4xl'
-                    //labelProps={{stroke:"none", strokeWidth:1}}
                     labelProps={{
                         fontSize: 18, // Set the font size here
                         textAnchor: 'middle',
@@ -173,11 +173,11 @@ function Example({
                 />
                 <AxisBottom
                     scale={xScale}
-                    top={height - margin.bottom / 2 *1.07}
-                    left={margin.left * 4}
+                    //bottom={margin.bottom}
+                    top={margin.top + ((bucketSizeMax+1)*binHeight)}
+                    left={margin.left}
                     label="Frequency (MHz)"
                     stroke="#333"
-                    strokeWidth="1"
                     labelProps={{
                         fontSize: 18, // Set the font size here
                         textAnchor: 'middle',

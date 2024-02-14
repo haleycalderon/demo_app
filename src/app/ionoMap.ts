@@ -7,6 +7,18 @@ type HeatmapData = {
     power: number[][];
 };
 
+// function generateHeatmapData(numFreq: number, numRange: number): HeatmapData {
+//     const frequency = Array.from({ length: numFreq }, (_, index) => index + 1);
+//     const range = Array.from({ length: numRange }, (_, index) => index * 10);
+//     const power = Array.from({ length: numFreq }, () => {
+//         return Array.from({ length: numRange }, () => Math.floor(Math.random() * 11)); // Random power values between 0 and 10
+//     });
+//     return { frequency, range, power };
+// }
+
+// Example usage:
+//const heatmapData = generateHeatmapData(300, 500);
+
 export type BinItem = {
     count: number;
     bin: number;
@@ -18,6 +30,9 @@ type Bin = {
     bins: BinItem[];
 };
 
+function max<Datum>(data: Datum[], value: (d: Datum) => number): number {
+    return Math.max(...data.map(value));
+}
 // Takes a HeatmapData object/type and returns an array of bins to populate heatmap.
 function convertToHeatmapBins(data: HeatmapData): Bin[] {
     const bins: Bin[] = [];
@@ -31,12 +46,14 @@ function convertToHeatmapBins(data: HeatmapData): Bin[] {
             const count = data.power[i][j];
             //const newItem: BinItem = {count, bin: range}
             //binItems.push(newItem)
+            
             binItems.push({ count, bin: range });
         }
-
+        
         bins.push({ bin: frequency, bins: binItems });
     }
-
+    //console.log(bins[0].bins.length)
+    //console.log(max(bins[0].bins, (d) => d.length))
     return bins;
 }
 
@@ -70,6 +87,7 @@ const jsonData: HeatmapData = data
 //             ]
 // };
 
+//const heatmapBins = generateHeatmapData(300, 500)
 const heatmapBins = convertToHeatmapBins(jsonData);
 console.log(heatmapBins);
 
